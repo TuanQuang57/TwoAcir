@@ -1,6 +1,8 @@
 from PIL import Image
+import os
+from multiprocessing import Pool
 
-def resize_512(file_name):
+def resize_512(file_name, path, path_512):
     scale = 4
 
     file_path = path['GT'] + file_name
@@ -23,7 +25,7 @@ def resize_512(file_name):
     resized_file = file.resize((ow // scale, oh // scale), Image.BICUBIC)
     resized_file.save(path_512['Input_S'] + file_name)
 
-def resize_1K(file_name):
+def resize_1K(file_name, path, path_1K):
     scale = 2
 
     file_path = path['GT'] + file_name
@@ -45,8 +47,6 @@ def resize_1K(file_name):
     resized_file = file.resize((ow // scale, oh // scale), Image.BICUBIC)
     resized_file.save(path_1K['Input_S'] + file_name)
 
-
-
 def get_file_list(file_path):
     files_list = []
     for root, dirs, files in os.walk(file_path):
@@ -54,11 +54,13 @@ def get_file_list(file_path):
             files_list.append(filename)
     return files_list
 
+def resize_512_wrapper(args):
+    return resize_512(*args)
+
+def resize_1K_wrapper(args):
+    return resize_1K(*args)
 
 if __name__ == '__main__':
-    import os
-    from multiprocessing import Pool
-
     path = {
         'GT': r'../Datasets/Cityscape2K/GT/',
         'Input': r'../Datasets/Cityscape2K/Input/',
@@ -77,7 +79,6 @@ if __name__ == '__main__':
         'Input_S': r'../Datasets/test1K/Input_S/',
     }
 
-
     for key in path.keys():
         if not os.path.exists(path[key]):
             os.makedirs(path[key])
@@ -86,13 +87,11 @@ if __name__ == '__main__':
         if not os.path.exists(path_1K[key]):
             os.makedirs(path_1K[key])
 
-
     decode_files = get_file_list(path['GT'])
     print(decode_files)
 
     pool = Pool(4)
-    pool.map(resize_512, decode_files)
-    pool.map(resize_1K, decode_files)
+    pool.map(resize_512_wrapper, [(file, path, path_512) for file in decode_files])
+    pool.map(resize_1K_wrapper, [(file, path, path_1K) for file in decode_files])
     pool.close()
     pool.join()
-

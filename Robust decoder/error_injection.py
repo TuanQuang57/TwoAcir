@@ -147,9 +147,13 @@ def error_generate(BER):
         print('exist')
 
 
-def inject_error(key):
+def inject_error(key, image_dic):
     encrypt(image_dic[key]['name'][0])
     decrypt(image_dic[key]['name'][0], image_dic[key]['error'])
+
+
+def wrapper_inject_error(args):
+    return inject_error(*args)
 
 
 if __name__ == '__main__':
@@ -163,10 +167,6 @@ if __name__ == '__main__':
 
     # 3rd encrypt the JPEG file and inject bit error, and then decrypt the JPEG file with bit errors.
     pool = Pool(4)
-    pool.map(inject_error, image_dic.keys())
+    pool.map(wrapper_inject_error, [(key, image_dic) for key in image_dic.keys()])
     pool.close()
     pool.join()
-
-
-
-

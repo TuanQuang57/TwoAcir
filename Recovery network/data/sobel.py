@@ -65,7 +65,7 @@ if __name__ == "__main__":
     from torchvision import transforms
 
     net = GradLayer()
-    img = Image.open('./example.jpg')
+    img = Image.open('abc.png')
     transform = transforms.Compose([
         transforms.ToTensor(),  # convert range [0, 255] to range [0, 1]
     ])

@@ -327,7 +327,7 @@ class JpegDecoder(object):
     def guiyi(self, x) -> np.ndarray:
         return (x-np.min(x))/(np.max(x)-np.min(x))
 
-def decode(file):
+def decode(file, decode_path, decoder):
     file_path = decode_path + r'/' + file
     print(file_path)
     with open(file_path, "rb") as f:
@@ -344,6 +344,9 @@ def get_file_list(file_path):
             files_list.append(filename)
     return files_list
 
+def wrapper_decode(args):
+    return decode(*args)
+
 
 if __name__ == '__main__':
     import os
@@ -352,7 +355,9 @@ if __name__ == '__main__':
     decode_path = r'../Datasets/Cityscape2K/De/'
     decode_files = get_file_list(decode_path)
 
+    # [(file, path, path_512) for file in decode_files]
+
     pool = Pool(4)
-    pool.map(decode, decode_files)
+    pool.map(wrapper_decode, [(file, decode_path, decoder) for file in decode_files])
     pool.close()
     pool.join()

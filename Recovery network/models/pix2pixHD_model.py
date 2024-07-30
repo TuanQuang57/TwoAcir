@@ -112,14 +112,14 @@ class Pix2PixHDModel(BaseModel):
 
 
     def encode_input(self, label, image, gt_thumbnail, gt_thumbnail_original, infer=False):
-        label = label.data.cuda()
-        image = Variable(image.data.cuda())
-        gt_thumbnail = Variable(gt_thumbnail.data.cuda())
+        label = label.data
+        image = Variable(image.data)
+        gt_thumbnail = Variable(gt_thumbnail.data)
         input_label = torch.cat((label, gt_thumbnail), dim=1)
 
         w = gt_thumbnail_original.shape[3]
         gt_thumbnail_original = gt_thumbnail_original[:,:,:,:w]
-        gt_thumbnail_original = Variable(gt_thumbnail_original.data.cuda())
+        gt_thumbnail_original = Variable(gt_thumbnail_original.data)
         return input_label, image, gt_thumbnail, gt_thumbnail_original
 
     def discriminate(self, input_label, test_image, use_pool=False):

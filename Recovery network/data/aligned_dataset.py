@@ -2,7 +2,7 @@
 ### Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 import os.path
 
-import util.util
+# import util.util
 from data.base_dataset import BaseDataset, get_params, get_transform, normalize
 from data.image_folder import make_dataset, make_sortedDataset
 from PIL import Image
@@ -26,11 +26,13 @@ class AlignedDataset(BaseDataset):
         ### input A (label maps)
         dir_A = 'Input_S'  # Input / Input_S / Input_WO_N
         self.dir_A = os.path.join(opt.dataroot, dir_A)
+        # self.dir_A = f'{opt.dataroot}/{dir_A}'
         self.A_paths = sorted(make_dataset(self.dir_A))
 
         ### input B (real images)
         dir_B = 'GT' # GT
         self.dir_B = os.path.join(opt.dataroot, dir_B)
+        # self.dir_B = f'{opt.dataroot}/{dir_B}'
         self.B_paths = sorted(make_dataset(self.dir_B))
 
         # dir_C = 'GTT_1'

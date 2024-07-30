@@ -10,7 +10,7 @@ display_freq: 100
 display_winsize: 512
 feat_num: 3
 fineSize: 512
-gpu_ids: [1]
+gpu_ids: []
 instance_feat: False
 isTrain: True
 label_feat: False
@@ -60,7 +60,7 @@ rgb_range: 255
 save_epoch_freq: 1
 save_latest_freq: 1000
 scale: [1]
-scen: 1
+scen: 2
 serial_batches: False
 tf_log: False
 use_dropout: False
